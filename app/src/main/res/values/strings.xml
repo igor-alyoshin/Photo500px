@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Photo500px</string>
+
+    <string name="tab_new">New</string>
+    <string name="tab_popular">Popular</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="consumer_key">dwYgu08j7DfWFKizvq7QxUugklBYd5zYOKV0CyOZ</string>
+</resources>
