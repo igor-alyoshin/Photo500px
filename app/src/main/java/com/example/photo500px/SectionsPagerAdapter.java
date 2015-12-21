@@ -3,21 +3,19 @@ package com.example.photo500px;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Subscriber;
 import rx.functions.Action1;
-import rx.subjects.PublishSubject;
 
 /**
  * Created by igor on 05.12.15.
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-    private List<MainTabFragment> fragmentList = new ArrayList<>();
+    private List<Fragment> fragmentList = new ArrayList<>();
     private List<String> titlesList = new ArrayList<>();
     private int currentPosition = 0;
 
@@ -45,8 +43,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         return titlesList.get(position);
     }
 
-    public Action1<Integer> getOnActionBarItemClickAction() {
-        return id -> fragmentList.get(currentPosition).onActionBarClick(id);
+    public Action1<MenuItem> getOnActionBarItemClickAction() {
+        return menuItem -> fragmentList.get(currentPosition).onOptionsItemSelected(menuItem);
     }
 
     public Action1<Integer> getOnPageChangeAction() {

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.WindowManager;
 
 import com.example.photo500px.model.Photo;
 
@@ -40,10 +39,6 @@ public class GalleryActivity extends AppCompatActivity {
         setContentView(R.layout.gallery);
         ButterKnife.bind(this);
         setupViewPager(viewPager);
-
-        WindowManager.LayoutParams windowManager = getWindow().getAttributes();
-        windowManager.dimAmount = 0.75f;
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
     }
 
     public void setupViewPager(ViewPager viewPager) {

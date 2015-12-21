@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.sliding_tabs)
     TabLayout tabLayout;
 
-    private PublishSubject<Integer> actionBarItemClickSubject = PublishSubject.create();
+    private PublishSubject<MenuItem> actionBarItemClickSubject = PublishSubject.create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            actionBarItemClickSubject.onNext(id);
+            actionBarItemClickSubject.onNext(item);
             return true;
         }
 
