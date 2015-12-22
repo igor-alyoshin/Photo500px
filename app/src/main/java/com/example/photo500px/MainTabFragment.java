@@ -13,9 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.photo500px.model.Result;
-import com.example.photo500px.presenter.ExtendedPhotosPresenter;
 import com.example.photo500px.presenter.PhotosPresenter;
 import com.example.photo500px.view.PhotosView;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -30,8 +31,10 @@ public class MainTabFragment extends Fragment implements PhotosView {
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    @Inject
+    PhotosPresenter photosPresenter;
+
     private PhotoAdapter photoAdapter;
-    private PhotosPresenter photosPresenter;
 
     public static MainTabFragment newInstance(String type) {
         Bundle args = new Bundle();
@@ -46,7 +49,7 @@ public class MainTabFragment extends Fragment implements PhotosView {
     public void onCreate(Bundle savedStateInstance) {
         super.onCreate(savedStateInstance);
         photoAdapter = new PhotoAdapter();
-        photosPresenter = new ExtendedPhotosPresenter(this, getArguments().getString(EXTRA_TYPE), getString(R.string.consumer_key));
+        App.get().inject(this);
     }
 
     @Override
@@ -65,14 +68,24 @@ public class MainTabFragment extends Fragment implements PhotosView {
         recyclerView.setAdapter(photoAdapter);
         swipeRefreshLayout.setColorSchemeResources(R.color.primary_color);
         swipeRefreshLayout.setOnRefreshListener(photosPresenter);
-        photosPresenter.onViewCreated();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        photosPresenter.onStart(this, getArguments().getString(EXTRA_TYPE), getString(R.string.consumer_key));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        photosPresenter.onStop();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         recyclerView.setAdapter(null);
-        photosPresenter.onDestroyView();
     }
 
     @Override
@@ -87,7 +100,7 @@ public class MainTabFragment extends Fragment implements PhotosView {
     }
 
     @Override
-    public Subscriber<Result> getLoadPhotosSubscriber(String type) {
+    public Subscriber<Result> getLoadPhotosSubscriber() {
         return new Subscriber<Result>() {
             @Override
             public void onStart() {

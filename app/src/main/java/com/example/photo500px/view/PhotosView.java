@@ -8,5 +8,5 @@ import rx.Subscriber;
  * Created by igor on 21.12.15.
  */
 public interface PhotosView {
-    Subscriber<Result> getLoadPhotosSubscriber(String type);
+    Subscriber<Result> getLoadPhotosSubscriber();
 }
