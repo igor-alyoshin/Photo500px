@@ -7,11 +7,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.jakewharton.rxbinding.support.v4.view.RxViewPager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscription;
 import rx.subjects.PublishSubject;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
 
     private PublishSubject<MenuItem> actionBarItemClickSubject = PublishSubject.create();
+    private Subscription animateSubscribtion = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +59,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_refresh) {
+        if (id == R.id.action_refresh && animateSubscribtion == null) {
+            View v = toolbar.findViewById(id);
+            animateSubscribtion = AnimateObservable
+                    .animate(v).from(0).to(360).duration(250)
+                    .doOnUnsubscribe(() -> animateSubscribtion = null)
+                    .subscribe();
             actionBarItemClickSubject.onNext(item);
-            return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
